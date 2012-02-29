@@ -1,0 +1,54 @@
+spnavkbd - 0.1
+--------------
+
+1. About
+
+The spnavkbd tool makes use of the open source spacenavd daemon to react to
+movements of a 3d Connexion Space Navigator and emulate key presses to control
+traditional keyboard oriented applications (in my case XBMC).
+
+2. Build dependencies
+
+libspnav (known to work with 0.2.2). In the spnavkbd directory run:
+
+  $ wget http://downloads.sourceforge.net/spacenav/libspnav-0.2.2.tar.gz
+  $ tar -xf libspnav-0.2.2.tar.gz
+
+And using your distros package manager make sure you have either Lua or
+LuaJIT2 installed. On some systems (Debian) make sure you have the "*-dev"
+versions of these package installed.
+
+3. Building
+
+Run:
+
+  $ make
+
+To use a custom compiler or to link against LuaJIT2 do:
+
+  $ CC=clang LUA_PKG_NAME=luajit make
+
+4. Installing
+
+You can run the spnavkbd binary from anywhere but ensure you have the
+spnavkbd.lua config file in the current working directory.
+
+5. Configuring
+
+See the spnavkbd.lua config file.
+
+6. Caveats
+
+At the moment you need to run spnavkbd as the same user of the applications
+you which to control.
+
+You can *probably* still launch spnavkbd from an rc or init script with:
+
+  (*Note* this isn't working for me yet)
+  # cd /path/to/spnavkbd/dir/
+  # DISPLAY=:0.0 XAUTHORITY=$(ps -C X -f --no-header | sed -n 's/.*-auth //; s/ -[^ ].*//; p') su mason -c ./spnavkbd
+
+Change 'X' to 'xinit' depending on how you launch X. And change 'mason' to the
+user of the applications you wish to control.
+
+Also make sure this is run after X has been started.
