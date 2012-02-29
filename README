@@ -35,7 +35,25 @@ spnavkbd.lua config file in the current working directory.
 
 5. Configuring
 
-See the spnavkbd.lua config file.
+See the spnavkbd.lua file for the full list of configuration options at this
+time.
+
+The 3d-mouse-to-key mappings in the default config were chosen to best control
+XBMC for my car computer.
+
+From a birds-eye POV pushing the knob forward, backward, left and right
+simulate the up, down, left and right arrow keys respectively.
+
+Pushing down the knob simulates a Return press and pulling the knob up is a
+BackSpace.
+
+Twisting the knob in a clockwise and anti-clockwise directions simulate '-' &
+'+' keys for volume control.
+
+Button 0 (left button) is Escape to return to the top menu and button 1 is Tab
+to switch between file view and the visualisation screen.
+
+Tilting forward, backward, left and right doesn't do anything useful yet.
 
 6. Caveats
 
