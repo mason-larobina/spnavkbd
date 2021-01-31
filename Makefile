@@ -7,7 +7,7 @@ LUA_PKG_NAME ?= lua
 LIBSPNAV = ./libspnav-0.2.2/
 
 CFLAGS = -std=gnu99 -pedantic -Wall -g -I$(LIBSPNAV) $(shell pkg-config --cflags $(LUA_PKG_NAME))
-LDFLAGS = -lrt -L$(LIBSPNAV) -lspnav -lX11 $(shell pkg-config --libs lua)
+LDFLAGS = -lrt -L$(LIBSPNAV) -lspnav -lXtst -lX11 $(shell pkg-config --libs lua)
 
 .PHONY: all
 all: spnavkbd

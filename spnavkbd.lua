@@ -128,12 +128,36 @@ function motion_event(x, y, z, rx, ry, rz)
     end
 end
 
+
+-- Available actions
+-- send_keyev -- press and immediate release of key
+-- press_keyev -- press of key
+-- release_keyev -- release of key
+
+SHIFT = 50
+CTRL = 37
+ALT = 64
+
 function button_event(action, bnum)
     if action == "press" then
         if bnum == 0 then
             send_keyev(9, 0)
-        else
+        elseif bnum == 1 then
             send_keyev(23, 0)
+        elseif bnum == 6 then
+            press_keyev(SHIFT, 0)
+        elseif bnum == 7 then
+            press_keyev(CTRL, 0)
+        elseif bnum == 8 then
+            press_keyev(ALT, 0)
+        end
+    else
+        if bnum == 6 then
+            release_keyev(SHIFT, 0)
+        elseif bnum == 7 then
+            release_keyev(CTRL, 0)
+        elseif bnum == 8 then
+            release_keyev(ALT, 0)
         end
     end
 end
