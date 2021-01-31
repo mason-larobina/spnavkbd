@@ -25,6 +25,7 @@
 #include <time.h>
 
 #include <X11/Xlib.h>
+#include <X11/extensions/XTest.h>
 #include <spnav.h>
 
 #include <lua.h>
@@ -94,15 +95,51 @@ lua_send_keyev(lua_State *L)
     XGetInputFocus(event.display, &win_focus, &revert);
     event.window = win_focus;
 
-    event.keycode = luaL_checkint(L, 1);
-    event.state = !lua_isnoneornil(L, 2) ? luaL_checkint(L, 2) : 0;
+    event.keycode = luaL_checkinteger(L, 1);
+    event.state = !lua_isnoneornil(L, 2) ? luaL_checkinteger(L, 2) : 0;
 
     //printf("send_keyev (%4d, %4d)\n", event.keycode, event.state);
 
-    event.type = KeyPress;
-    XSendEvent(event.display, event.window, True, KeyPressMask, (XEvent*)&event);
-    event.type = KeyRelease;
-    XSendEvent(event.display, event.window, True, KeyPressMask, (XEvent*)&event);
+    XTestFakeKeyEvent(event.display, event.keycode, true, 0);
+    XTestFakeKeyEvent(event.display, event.keycode, false, 0);
+
+    return 0;
+}
+
+int
+lua_press_keyev(lua_State *L)
+{
+    /* event.window = currently focused window */
+    Window win_focus;
+    int revert;
+    XGetInputFocus(event.display, &win_focus, &revert);
+    event.window = win_focus;
+
+    event.keycode = luaL_checkinteger(L, 1);
+    event.state = !lua_isnoneornil(L, 2) ? luaL_checkinteger(L, 2) : 0;
+
+    printf("press_keyev (%4d, %4d)\n", event.keycode, event.state);
+
+    XTestFakeKeyEvent(event.display, event.keycode, true, 0);
+
+    return 0;
+}
+
+int
+lua_release_keyev(lua_State *L)
+{
+    /* event.window = currently focused window */
+    Window win_focus;
+    int revert;
+    XGetInputFocus(event.display, &win_focus, &revert);
+    event.window = win_focus;
+
+    event.keycode = luaL_checkinteger(L, 1);
+    event.state = !lua_isnoneornil(L, 2) ? luaL_checkinteger(L, 2) : 0;
+
+    printf("release_keyev (%4d, %4d)\n", event.keycode, event.state);
+
+    XTestFakeKeyEvent(event.display, event.keycode, false, 0);
 
     return 0;
 }
@@ -118,6 +155,12 @@ lua_init(lua_State **L)
 
     lua_pushcfunction(*L, lua_send_keyev);
     lua_setglobal(*L, "send_keyev");
+
+    lua_pushcfunction(*L, lua_press_keyev);
+    lua_setglobal(*L, "press_keyev");
+
+    lua_pushcfunction(*L, lua_release_keyev);
+    lua_setglobal(*L, "release_keyev");
 
     if (!lua_loadrc(*L, "spnavkbd.lua"))
         exit(1);
